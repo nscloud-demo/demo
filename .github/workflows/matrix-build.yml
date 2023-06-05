@@ -13,7 +13,7 @@ jobs:
             nscloud-arm64,
             nscloud-ubuntu-22.04-arm64-2x4, # Custom runner shape 2 CPU 4 GB RAM
           ]
-        args: [arg1, arg2, arg3]
+        args: [value1, value2, value3]
     runs-on: ${{ matrix.platform }}
     steps:
       - uses: actions/checkout@v3
@@ -24,8 +24,8 @@ jobs:
           context: .
           build-args: ${{ matrix.args }}
           load: true
-          tags: demo/app-${{ matrix.args }}$:v0.0.1
+          tags: demo/app-${{ matrix.args }}:v0.0.1
 
       - name: Run demo image
         run: |
-          docker run demo/app-${{ matrix.args }}$:v0.0.1
+          docker run demo/app-${{ matrix.args }}:v0.0.1
