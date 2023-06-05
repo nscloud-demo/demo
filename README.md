@@ -6,4 +6,4 @@ This repo implements a GitHub Actions workflow with parallel jobs using differen
 
 ## How to run
 
-Either push a new commit or manually trigger the workflow through the [GitHub page](https://github.com/nscloud-demo/demo/actions/workflows/matrix-build.yml)
+Either push a new commit or manually trigger the workflow through the [GitHub page](https://github.com/nscloud-demo/demo/actions/workflows/matrix-build.yml).
