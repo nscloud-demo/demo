@@ -1,6 +1,9 @@
 FROM ubuntu
 
-ARG build_arg
+ARG MSG
+ENV ENV_MSG=$MSG
 
 RUN apt-get update
-RUN echo ${build_arg}
+RUN echo ${MSG}
+
+ENTRYPOINT echo ${ENV_MSG}
