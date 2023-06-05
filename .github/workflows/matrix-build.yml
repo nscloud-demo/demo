@@ -25,6 +25,7 @@ jobs:
           build-args: ${{ matrix.args }}
           load: true
           tags: demo/app-${{ matrix.args }}:v0.0.1
+          platforms: ${{github.RUNNER_OS}}/${{github.RUNNER_ARCH}}
 
       - name: Run demo image
         run: |
