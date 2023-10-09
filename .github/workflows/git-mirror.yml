@@ -7,6 +7,7 @@ jobs:
     runs-on: [nscloud-ubuntu-22.04-amd64-2x4-with-cache, nscloud-git-mirror-5gb]
     steps:
       - run: |
+            mkdir -p /gitmirror/github-com-nscloud-demo-demo-git
             git --git-dir /gitmirror/github-com-nscloud-demo-demo-git fetch origin main
             git clone -v --reference /gitmirror/github-com-nscloud-demo-demo-git -- https://github.com/nscloud-demo/demo.git .
             git clean -ffxdq
