@@ -1,6 +1,6 @@
 on: [workflow_dispatch]
 
-name: demo-matrix
+name: demo-git-mirror
 
 jobs:
   git-mirror:
