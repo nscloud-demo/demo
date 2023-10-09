@@ -1,0 +1,27 @@
+on: [workflow_dispatch]
+
+name: demo-matrix
+
+jobs:
+  git-mirror:
+    runs-on: [nscloud-ubuntu-22.04-amd64-2x4-with-cache, nscloud-git-mirror-5gb]
+    steps:
+      - run: |
+            git --git-dir /gitmirror/github-com-nscloud-demo-demo-git fetch origin main
+            git clone -v --reference /gitmirror/github-com-nscloud-demo-demo-git -- https://github.com/nscloud-demo/demo.git .
+            git clean -ffxdq
+            git fetch -v --prune -- origin ${{ github.GITHUB_SHA }}
+            git checkout -f ${{ github.GITHUB_SHA }}
+
+      - name: Build and push
+        uses: docker/build-push-action@v4
+        with:
+          context: .
+          build-args: MSG="hello"
+          load: true
+          tags: demo/app-test:v0.0.1
+          platforms: linux/amd64
+
+      - name: Run demo image
+        run: |
+          docker run demo/app-test:v0.0.1
