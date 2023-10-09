@@ -8,12 +8,15 @@ jobs:
     steps:
       - run: |
             sudo chown runner /gitmirror
-            mkdir -p /gitmirror/github-com-nscloud-demo-demo-git
-            git --git-dir /gitmirror/github-com-nscloud-demo-demo-git fetch origin main
-            git clone -v --reference /gitmirror/github-com-nscloud-demo-demo-git -- https://github.com/nscloud-demo/demo.git .
+            if [ ! -d "/gitmirror/github-com-nscloud-demo-git" ]; then
+                mkdir -p /gitmirror/github-com-nscloud-demo-git
+                git clone --mirror -v -- https://github.com/nscloud-demo/demo.git /gitmirror/github-com-nscloud-demo-git
+            fi
+            git --git-dir /gitmirror/github-com-nscloud-demo-git fetch origin main
+            git clone -v --reference /gitmirror/github-com-nscloud-demo-git -- https://github.com/nscloud-demo/demo.git .
             git clean -ffxdq
-            git fetch -v --prune -- origin ${{ github.GITHUB_SHA }}
-            git checkout -f ${{ github.GITHUB_SHA }}
+            git fetch -v --prune -- origin main
+            git checkout -f ${{ github.sha }}
 
       - name: Build and push
         uses: docker/build-push-action@v4
