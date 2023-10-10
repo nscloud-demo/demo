@@ -4,7 +4,7 @@ name: demo-git-mirror
 
 jobs:
   git-mirror:
-    runs-on: [nscloud-ubuntu-22.04-amd64-2x4-with-cache, nscloud-git-mirror-5gb]
+    runs-on: [nscloud-ubuntu-22.04-staging-amd64-2x4-with-cache, nscloud-git-mirror-5gb]
     steps:
       - name: Namespace Checkout
         uses: namespacelabs/checkout@HEAD
