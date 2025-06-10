@@ -1,0 +1,59 @@
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+    inputs:
+      breakpoint:
+        description: "Stop for debugging"
+        required: false
+        type: boolean
+      run_on_ghrunners:
+        description: "Also run on GitHub-hosted runners"
+        required: false
+        type: boolean
+
+name: simple-macos
+
+jobs:
+  env:
+    strategy:
+      matrix:
+        release: ["sonoma", "sequoia", "tahoe"]
+        channel: ["stable", "preview"]
+      fail-fast: false
+
+    runs-on:
+      - nscloud-macos-${{matrix.release}}-arm64-6x14
+      - namespace-features:macos.channel=${{matrix.channel}}
+
+    steps:
+      - name: Env checks
+        run: |
+          sw_vers
+          env
+          ls -l /Applications
+
+      - name: Breakpoint
+        if: inputs.breakpoint || failure() && github.ref_name == 'main'
+        uses: namespacelabs/breakpoint-action@v0
+        with:
+          duration: 15m
+          authorized-users: edganiukov,hugosantos,n-g,htr,nichtverstehen,gmichelo,attilaolah,pavolmarko
+
+  ghrunners:
+    runs-on: macos-14
+    if: inputs.run_on_ghrunners
+    steps:
+      - name: Env checks
+        run: |
+          ulimit -a
+          env
+          uname -a
+
+      - name: Breakpoint
+        if: inputs.breakpoint || failure() && github.ref_name == 'main'
+        uses: namespacelabs/breakpoint-action@v0
+        with:
+          duration: 15m
+          authorized-users: edganiukov,hugosantos,n-g,htr,nichtverstehen,gmichelo,attilaolah,pavolmarko
